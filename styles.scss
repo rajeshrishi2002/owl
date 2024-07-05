@@ -1,0 +1,567 @@
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+html,
+body {
+  padding: 0px;
+  margin: 0px;
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  font-family: "Lato", sans-serif;
+  background: #f2f2f2;
+  font-size: 15px;
+  margin: 0;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+}
+#app {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+#canvas {
+  background-image: radial-gradient(
+    1600px at 70% 120%,
+    rgba(33, 39, 80, 1) 10%,
+    #020409 100%
+  );
+}
+#meterbox {
+  position: fixed;
+  bottom: 60px;
+  left: 10px;
+  width: 50px;
+  height: 300px;
+  transform: rotateX(180deg);
+  user-select: none;
+  background: #000;
+  border-radius: 1px;
+  box-shadow: 0 0 10px 5px rgba(255, 255, 255, 0.05),
+    0 3px 5px 1px rgba(0, 0, 0, 0.8) inset,
+    0 5px 30px 0 rgba(255, 255, 255, 0.25) inset, 0 0 0 1px rgba(0, 0, 0, 0.75);
+}
+#meter {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 10px;
+}
+.start {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: none;
+  padding: 16px 24px 15px;
+  background: white;
+  border-radius: 4px;
+  text-transform: uppercase;
+  outline: none;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 24px;
+  background: #03a9f4;
+  color: #fff;
+  box-shadow: 0 0 0.25em rgba(0,0,0,0.5);
+  text-shadow: 0 0 0.25em rgba(0,0,0,0.5);
+}
+.ground {
+  position: fixed;
+  bottom: -10px;
+  width: 100%;
+  max-height: 8%;
+}
+.owlotree {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  bottom: 0;
+}
+.left_wing {
+  transform-origin: 43% 0%;
+}
+.right_wing {
+  transform-origin: 55% 5%;
+}
+
+.left_wing,
+.right_wing {
+  transform-box: fill-box;
+}
+.eye_left,
+.eye_right,
+.white,
+.eyes_wrapper {
+  transform-origin: center center;
+  transform-box: fill-box;
+}
+.right_claws,
+.left_claws {
+  display: none;
+}
+.owl {
+  animation: wobble 8s ease-in-out infinite;
+  transform-box: fill-box;
+  transform-origin: 50% 96%;
+}
+@for $i from 1 through 12 {
+  .owl:nth-child(#{$i}) {
+    animation-delay: #{$i/2}s;
+  }
+}
+
+@for $i from 1 through 10 {
+  .eyeAnimation#{$i} .owl_iris_left,
+  .eyeAnimation#{$i} .owl_iris_right {
+    animation: eyeMovementAnimation#{$i} 7s infinite;
+    animation-delay: #{$i/2}s;
+  }
+}
+
+.eye_right,
+.eye_left {
+  transform: rotateX(90deg);
+}
+
+@for $i from 1 through 10 {
+  .wakeUp#{$i} {
+    .eye_right,
+    .eye_left {
+      animation: wakeUp 7s forwards;
+      animation-iteration-count: 1;
+      animation-delay: #{$i/10}s;
+    }
+    .eyes_wrapper {
+      animation: blink 4s ease-in-out infinite;
+      animation-delay: #{$i/3}s;
+    }
+  }
+}
+
+#app {
+  &[data-state="chaos"] {
+    .right_claws,
+    .left_claws {
+      display: block;
+    }
+    .left_wing {
+      animation: shake-left-wing 0.5s infinite;
+    }
+    .right_wing {
+      animation: shake-right-wing 0.5s infinite;
+    }
+    @for $i from 1 through 10 {
+      .eyeAnimation#{$i} {
+        animation: flyAwayOwl#{$i} 7s;
+        transform-box: fill-box;
+        transform-origin: center center;
+        animation-iteration-count: 1;
+        animation-fill-mode: forwards;
+        animation-delay: #{$i/3}s;
+      }
+    }
+    .eye_right,
+    .eye_left {
+      transform: rotateX(0deg);
+    }
+  }
+}
+
+// keyframes
+@keyframes shake-left-wing {
+  0% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(90deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+@keyframes shake-right-wing {
+  0% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(-100deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+@keyframes blink {
+  0% {
+    transform: rotateX(0deg);
+  }
+  5% {
+    transform: rotateX(90deg);
+  }
+  10% {
+    transform: rotateX(0deg);
+  }
+  95% {
+    transform: rotateX(0deg);
+  }
+  100% {
+    transform: rotateX(0deg);
+  }
+}
+@keyframes wakeUp {
+  0% {
+    transform: rotateX(90deg);
+  }
+  5% {
+    transform: rotateX(0deg);
+  }
+  95% {
+    transform: rotateX(0deg);
+  }
+  100% {
+    transform: rotateX(0deg);
+  }
+}
+@keyframes slightly-move-eyes {
+  0% {
+    transform: translateX(-1.2px);
+  }
+  80% {
+    transform: translateX(-1.2px);
+  }
+  100% {
+    transform: translateX(5px);
+  }
+}
+@keyframes look-around {
+  0% {
+    transform: translateX(0px);
+  }
+  8.3% {
+    transform: translateX(-2px);
+  }
+  16.63% {
+    transform: translateX(5px);
+  }
+  24.9% {
+    transform: translateY(4px);
+  }
+  33.23% {
+    transform: translateX(-4px);
+  }
+  50% {
+    transform: translateX(0px);
+  }
+}
+
+// eye movement animations
+@keyframes eyeMovementAnimation1 {
+  0% {
+    transform: translateX(0px);
+  }
+  8.3% {
+    transform: translateX(-2px);
+  }
+  16.63% {
+    transform: translateX(5px);
+  }
+  24.9% {
+    transform: translateY(4px);
+  }
+  33.23% {
+    transform: translateX(-4px);
+  }
+  50% {
+    transform: translateX(0px);
+  }
+}
+
+@keyframes eyeMovementAnimation2 {
+  8.3% {
+    transform: translate(-2px, 5px);
+  }
+  16.63% {
+    transform: translateX(5px);
+  }
+  24.9% {
+    transform: translate(-4px);
+  }
+  50% {
+    transform: translateX(0px);
+  }
+}
+
+@keyframes eyeMovementAnimation3 {
+  8.3% {
+    transform: translate(0, 5px);
+  }
+  33.23% {
+    transform: translate(0, 5px);
+  }
+  60% {
+    transform: translate(0, 5px);
+  }
+  70% {
+    transform: translate(0, -2px);
+  }
+  90% {
+    transform: translate(0, -2px);
+  }
+  94% {
+    transform: translate(0, 0);
+  }
+}
+@keyframes eyeMovementAnimation4 {
+  3% {
+    transform: translate(3px, -3px);
+  }
+  20% {
+    transform: translate(3px, -3px);
+  }
+  23% {
+    transform: translate(5px, 0px);
+  }
+  50% {
+    transform: translate(5px, 0px);
+  }
+  90% {
+    transform: translate(0, -2px);
+  }
+  94% {
+    transform: translate(0, 0);
+  }
+}
+@keyframes eyeMovementAnimation5 {
+  3% {
+    transform: translate(-3px, -2px);
+  }
+  30% {
+    transform: translate(-3px, -2px);
+  }
+  33% {
+    transform: translate(-3px, 4px);
+  }
+  60% {
+    transform: translate(-3px, 4px);
+  }
+  63% {
+    transform: translate(2px, 1px);
+  }
+  94% {
+    transform: translate(2px, 1px);
+  }
+}
+@keyframes eyeMovementAnimation6 {
+  3% {
+    transform: translate(3px, 2px);
+  }
+  30% {
+    transform: translate(3px, 2px);
+  }
+  33% {
+    transform: translate(-3px, 4px);
+  }
+  60% {
+    transform: translate(-3px, 4px);
+  }
+  63% {
+    transform: translate(2px, 1px);
+  }
+  80% {
+    transform: translate(2px, 1px);
+  }
+}
+@keyframes eyeMovementAnimation7 {
+  3% {
+    transform: translate(2px, 4px);
+  }
+  30% {
+    transform: translate(2px, 4px);
+  }
+  33% {
+    transform: translate(-3px, 4px);
+  }
+  60% {
+    transform: translate(-3px, 4px);
+  }
+  63% {
+    transform: translate(-3px, -3px);
+  }
+  67% {
+    transform: translate(-3px, -3px);
+  }
+  90% {
+    transform: translate(-3px, -3px);
+  }
+}
+@keyframes eyeMovementAnimation8 {
+  3% {
+    transform: translate(0px, -4px);
+  }
+  45% {
+    transform: translate(0px, -4px);
+  }
+  48% {
+    transform: translate(-3px, 4px);
+  }
+  70% {
+    transform: translate(-3px, 4px);
+  }
+  73% {
+    transform: translate(-3px, -3px);
+  }
+  80% {
+    transform: translate(-3px, -3px);
+  }
+  90% {
+    transform: translate(-3px, -3px);
+  }
+}
+@keyframes eyeMovementAnimation9 {
+  3% {
+    transform: translate(2px, -2px);
+  }
+  45% {
+    transform: translate(2px, -2px);
+  }
+  48% {
+    transform: translate(3px, 4px);
+  }
+  70% {
+    transform: translate(3px, 4px);
+  }
+  73% {
+    transform: translate(-3px, -3px);
+  }
+  80% {
+    transform: translate(-3px, -3px);
+  }
+  90% {
+    transform: translate(-3px, -3px);
+  }
+}
+@keyframes eyeMovementAnimation10 {
+  10% {
+    transform: translate(3px, -3px);
+  }
+  45% {
+    transform: translate(3px, -3px);
+  }
+  48% {
+    transform: translate(-2px, 1px);
+  }
+  50% {
+    transform: translate(-2px, 1px);
+  }
+  73% {
+    transform: translate(-3px, -3px);
+  }
+  80% {
+    transform: translate(3px, 3px);
+  }
+  93% {
+    transform: translate(3px, 3px);
+  }
+}
+
+@keyframes wobble {
+  33% {
+    transform: rotate(5deg);
+  }
+  66% {
+    transform: rotate(-5deg);
+  }
+}
+
+@keyframes flyAwayOwl1 {
+  20% {
+    transform: translate(0, -50px);
+  }
+  25% {
+    transform: translate(0, -45px);
+  }
+  100% {
+    transform: translate(0, -1000px);
+  }
+}
+@keyframes flyAwayOwl2 {
+  20% {
+    transform: translate(50px, 50px);
+  }
+  100% {
+    transform: translate(1000px, -1000px);
+  }
+}
+@keyframes flyAwayOwl3 {
+  20% {
+    transform: translate(-60px, -120px);
+  }
+  100% {
+    transform: translate(-700px, -1000px);
+  }
+}
+@keyframes flyAwayOwl4 {
+  35% {
+    transform: translate(60px, -120px);
+  }
+  100% {
+    transform: translate(700px, -1800px);
+  }
+}
+@keyframes flyAwayOwl5 {
+  20% {
+    transform: translate(60px, 120px);
+  }
+  100% {
+    transform: translate(1000px, -1150px);
+  }
+}
+@keyframes flyAwayOwl6 {
+  25% {
+    transform: translate(-60px, 120px);
+  }
+  100% {
+    transform: translate(-1000px, -1000px);
+  }
+}
+@keyframes flyAwayOwl7 {
+  20% {
+    transform: translate(-10px, -80px);
+  }
+  100% {
+    transform: translate(800px, -1400px);
+  }
+}
+@keyframes flyAwayOwl8 {
+  30% {
+    transform: translate(20px, -80px);
+  }
+  100% {
+    transform: translate(80px, -1200px);
+  }
+}
+@keyframes flyAwayOwl9 {
+  40% {
+    transform: translate(10px, -100px);
+  }
+  100% {
+    transform: translate(180px, -1200px);
+  }
+}
+@keyframes flyAwayOwl10 {
+  10% {
+    transform: translate(-10px, 10px);
+  }
+  50% {
+    transform: translate(-200px, 100px);
+  }
+  100% {
+    transform: translate(180px, -1200px);
+  }
+}
